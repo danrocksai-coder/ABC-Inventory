@@ -8,16 +8,15 @@
         :root { --primary: #2563eb; --bg: #f1f5f9; --card: #ffffff; --accent: #7c3aed; --danger: #ef4444; }
         body { font-family: -apple-system, sans-serif; background: var(--bg); padding: 15px; margin: 0; color: #1e293b; }
         .container { max-width: 500px; margin: 0 auto; }
-        .header-box { background: white; padding: 20px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
-        .upload-btn { background: var(--primary); color: white; padding: 20px; border-radius: 12px; text-align: center; font-weight: bold; cursor: pointer; display: block; }
+        .header-box { background: white; padding: 20px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; text-align: center; }
+        .upload-btn { background: var(--primary); color: white; padding: 20px; border-radius: 12px; font-weight: bold; cursor: pointer; display: block; }
         .image-card { background: var(--card); padding: 15px; border-radius: 16px; margin-bottom: 20px; position: relative; border: 1px solid #e2e8f0; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .delete-btn { position: absolute; top: 10px; right: 10px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-weight: bold; cursor: pointer; z-index: 10; }
+        .delete-btn { position: absolute; top: 10px; right: 10px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-weight: bold; cursor: pointer; }
         .preview-img { width: 100%; border-radius: 12px; height: 200px; object-fit: cover; margin-bottom: 10px; }
         label { display: block; font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase; margin-top: 10px; }
         input, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #cbd5e1; border-radius: 10px; box-sizing: border-box; font-size: 16px; background: #f8fafc; }
         .ai-btn { background: var(--accent); color: white; width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: bold; margin: 15px 0; font-size: 1rem; }
-        .ai-btn:disabled { background: #94a3b8; }
         .export-btn { background: #059669; color: white; width: 100%; padding: 20px; border: none; border-radius: 12px; font-weight: bold; font-size: 1.1rem; position: sticky; bottom: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); }
     </style>
 </head>
@@ -25,14 +24,11 @@
     <div class="container">
         <div class="header-box">
             <h2 style="margin:0 0 10px 0;">📦 ABC Inventory Pro</h2>
-            <label>Starting Item Number</label>
-            <input type="number" id="startNum" value="100" style="margin-bottom:15px;">
-            <label class="upload-btn" for="fileInput">📸 Tap to Add Photos (Multi-select)</label>
+            <label class="upload-btn" for="fileInput">📸 Tap to Add Photos</label>
             <input type="file" id="fileInput" multiple accept="image/*" style="display:none;">
         </div>
-
         <div id="imageGrid"></div>
-        <button class="export-btn" onclick="exportToCSV()">💾 Export CSV Spreadsheet</button>
+        <button class="export-btn" onclick="exportToCSV()">💾 Export Spreadsheet (CSV)</button>
     </div>
 
     <script>
@@ -40,28 +36,20 @@
         const fileInput = document.getElementById('fileInput');
         const imageGrid = document.getElementById('imageGrid');
 
-        fileInput.addEventListener('change', handleFiles);
-
-        function handleFiles(e) {
-            const files = Array.from(e.target.files);
-            let currentNum = parseInt(document.getElementById('startNum').value);
-
-            files.forEach((file, index) => {
+        fileInput.addEventListener('change', (e) => {
+            Array.from(e.target.files).forEach(file => {
                 const reader = new FileReader();
                 reader.onload = (event) => {
-                    const id = `ABC-${currentNum + index}`;
                     const card = document.createElement('div');
                     card.className = 'image-card';
                     card.innerHTML = `
                         <button class="delete-btn" onclick="this.parentElement.remove()">X</button>
                         <img src="${event.target.result}" class="preview-img">
-                        <label>Item ID</label>
-                        <input type="text" class="item-id" value="${id}" readonly style="background:#e2e8f0">
                         <label>Product Title</label>
                         <input type="text" class="title" placeholder="Awaiting AI...">
                         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                             <div><label>Size</label><input type="text" class="size"></div>
-                            <div><label>Price</label><input type="text" class="price"></div>
+                            <div><label>Value</label><input type="text" class="price"></div>
                         </div>
                         <button class="ai-btn" onclick="runAI(this)">✨ Auto-Identify</button>
                         <label>Description</label>
@@ -71,8 +59,7 @@
                 };
                 reader.readAsDataURL(file);
             });
-            fileInput.value = ""; // Reset input
-        }
+        });
 
         async function runAI(btn) {
             const card = btn.closest('.image-card');
@@ -84,8 +71,7 @@
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 const scale = 800 / img.naturalWidth;
-                canvas.width = 800;
-                canvas.height = img.naturalHeight * scale;
+                canvas.width = 800; canvas.height = img.naturalHeight * scale;
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 const base64 = canvas.toDataURL('image/jpeg', 0.6).split(',')[1];
 
@@ -94,49 +80,40 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{ parts: [
-                            { text: "Identify this item. Return ONLY JSON: {title: 'Name', size: 'Size', price: 'Value', desc: '2 sentences'}" },
+                            { text: "Identify this item. Return JSON: {title: 'Name', size: 'Size', price: 'Val', desc: 'Summary'}" },
                             { inline_data: { mime_type: "image/jpeg", data: base64 } }
                         ]}]
                     })
                 });
 
                 const data = await res.json();
-                const json = JSON.parse(data.candidates[0].content.parts[0].text.replace(/```json|```/g, '').trim());
+                
+                // SAFETY CHECK: Fixes the 'undefined' error
+                if (!data.candidates) throw new Error("AI is busy. Refresh and try again.");
 
+                const json = JSON.parse(data.candidates[0].content.parts[0].text.replace(/```json|```/g, '').trim());
                 card.querySelector('.title').value = json.title;
                 card.querySelector('.size').value = json.size;
                 card.querySelector('.price').value = json.price;
                 card.querySelector('.desc').value = json.desc;
-                
                 btn.innerText = "✅ Done";
-                btn.style.background = "#059669";
             } catch (e) {
-                alert("AI Error: " + e.message);
+                alert("AI Busy: Tap 'Auto-Identify' again.");
                 btn.innerText = "✨ Try Again";
                 btn.disabled = false;
             }
         }
 
         function exportToCSV() {
-            let csv = "ID,Title,Size,Price,Description\n";
-            const cards = document.querySelectorAll('.image-card');
-            if(cards.length === 0) return alert("No items to export!");
-
-            cards.forEach(c => {
-                const row = [
-                    c.querySelector('.item-id').value,
-                    c.querySelector('.title').value,
-                    c.querySelector('.size').value,
-                    c.querySelector('.price').value,
-                    c.querySelector('.desc').value.replace(/"/g, '""')
-                ];
+            let csv = "Title,Size,Value,Description\n";
+            document.querySelectorAll('.image-card').forEach(c => {
+                const row = [c.querySelector('.title').value, c.querySelector('.size').value, c.querySelector('.price').value, c.querySelector('.desc').value.replace(/"/g, '""')];
                 csv += `"${row.join('","')}"\n`;
             });
-
             const blob = new Blob([csv], { type: 'text/csv' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = `ABC_Inventory_${new Date().toISOString().slice(0,10)}.csv`;
+            a.download = 'ABC_Inventory.csv';
             a.click();
         }
     </script>

@@ -1,118 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ABC Inventory Pro</title>
-    <style>
-        :root { --primary: #2563eb; --bg: #f1f5f9; --card: #ffffff; --accent: #7c3aed; --danger: #ef4444; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); padding: 15px; margin: 0; color: #1e293b; }
-        .container { max-width: 500px; margin: 0 auto; }
-        .header-box { background: white; padding: 20px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; text-align: center; }
-        .upload-btn { background: var(--primary); color: white; padding: 20px; border-radius: 12px; font-weight: bold; cursor: pointer; display: block; }
-        .image-card { background: var(--card); padding: 15px; border-radius: 16px; margin-bottom: 20px; position: relative; border: 1px solid #e2e8f0; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .delete-btn { position: absolute; top: 10px; right: 10px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-weight: bold; cursor: pointer; }
-        .preview-img { width: 100%; border-radius: 12px; height: 200px; object-fit: cover; margin-bottom: 10px; }
-        label { display: block; font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase; margin-top: 10px; }
-        input, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #cbd5e1; border-radius: 10px; box-sizing: border-box; font-size: 16px; background: #f8fafc; }
-        .ai-btn { background: var(--accent); color: white; width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: bold; margin: 15px 0; font-size: 1rem; }
-        .export-btn { background: #059669; color: white; width: 100%; padding: 20px; border: none; border-radius: 12px; font-weight: bold; font-size: 1.1rem; position: sticky; bottom: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Photo Inventory</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
+    h1 { text-align: center; color: #333; }
+    button { padding: 12px 20px; font-size: 18px; margin: 10px; cursor: pointer; }
+    #takePhoto { background: #4CAF50; color: white; border: none; border-radius: 8px; }
+    #export { background: #2196F3; color: white; border: none; border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    th { background: #f2f2f2; }
+    img.thumb { max-width: 80px; height: auto; border-radius: 4px; }
+    input { width: 90%; padding: 6px; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header-box">
-            <h2 style="margin:0 0 10px 0;">📦 ABC Inventory Pro</h2>
-            <label class="upload-btn" for="fileInput">📸 Tap to Add Photos</label>
-            <input type="file" id="fileInput" multiple accept="image/*" style="display:none;">
-        </div>
-        <div id="imageGrid"></div>
-        <button class="export-btn" onclick="exportToCSV()">💾 Export Spreadsheet (CSV)</button>
-    </div>
 
-    <script>
-        const GEMINI_KEY = "AIzaSyCzXpxFjB1DUBVutoEUxHz_8QsyVVLY9qg";
-        const fileInput = document.getElementById('fileInput');
-        const imageGrid = document.getElementById('imageGrid');
+  <h1>Simple Photo Inventory</h1>
+  <p>Take photos → they appear in the table with a number → export to CSV anytime.</p>
 
-        fileInput.addEventListener('change', (e) => {
-            Array.from(e.target.files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const card = document.createElement('div');
-                    card.className = 'image-card';
-                    card.innerHTML = `
-                        <button class="delete-btn" onclick="this.parentElement.remove()">X</button>
-                        <img src="${event.target.result}" class="preview-img">
-                        <label>Product Title</label>
-                        <input type="text" class="title" placeholder="Awaiting AI...">
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                            <div><label>Size</label><input type="text" class="size"></div>
-                            <div><label>Value</label><input type="text" class="price"></div>
-                        </div>
-                        <button class="ai-btn" onclick="runAI(this)">✨ Auto-Identify</button>
-                        <label>Description</label>
-                        <textarea class="desc" rows="3"></textarea>
-                    `;
-                    imageGrid.prepend(card);
-                };
-                reader.readAsDataURL(file);
-            });
-        });
+  <button id="takePhoto">📸 Take / Add Photo</button>
+  <input type="file" id="fileInput" accept="image/*" style="display:none;">
 
-        async function runAI(btn) {
-            const card = btn.closest('.image-card');
-            const img = card.querySelector('.preview-img');
-            btn.innerText = "🌀 Thinking...";
-            btn.disabled = true;
+  <button id="export">💾 Export to CSV</button>
 
-            try {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                const scale = 800 / img.naturalWidth;
-                canvas.width = 800; canvas.height = img.naturalHeight * scale;
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                const base64 = canvas.toDataURL('image/jpeg', 0.6).split(',')[1];
+  <table id="inventoryTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Photo</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
 
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [
-                            { text: "Identify this item. Return JSON: {title: 'Name', size: 'Size', price: 'Val', desc: 'Summary'}" },
-                            { inline_data: { mime_type: "image/jpeg", data: base64 } }
-                        ]}]
-                    })
-                });
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const takePhotoBtn = document.getElementById('takePhoto');
+    const exportBtn = document.getElementById('export');
+    const tableBody = document.getElementById('tableBody');
 
-                const data = await res.json();
-                
-                // SAFETY CHECK: Fixes the 'undefined' error
-                if (!data.candidates) throw new Error("AI is busy. Refresh and try again.");
+    let itemCounter = 1;
 
-                const json = JSON.parse(data.candidates[0].content.parts[0].text.replace(/```json|```/g, '').trim());
-                card.querySelector('.title').value = json.title;
-                card.querySelector('.size').value = json.size;
-                card.querySelector('.price').value = json.price;
-                card.querySelector('.desc').value = json.desc;
-                btn.innerText = "✅ Done";
-            } catch (e) {
-                alert("AI Busy: Tap 'Auto-Identify' again.");
-                btn.innerText = "✨ Try Again";
-                btn.disabled = false;
-            }
-        }
+    // Open camera/file picker
+    takePhotoBtn.addEventListener('click', () => {
+      fileInput.click();
+    });
 
-        function exportToCSV() {
-            let csv = "Title,Size,Value,Description\n";
-            document.querySelectorAll('.image-card').forEach(c => {
-                const row = [c.querySelector('.title').value, c.querySelector('.size').value, c.querySelector('.price').value, c.querySelector('.desc').value.replace(/"/g, '""')];
-                csv += `"${row.join('","')}"\n`;
-            });
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'ABC_Inventory.csv';
-            a.click();
-        }
+    // When photo is selected
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64 = event.target.result;  // data:image/jpeg;base64,...
+
+        // Create new row
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+          <td>${itemCounter}</td>
+          <td><img src="${base64}" class="thumb" alt="Item ${itemCounter}"></td>
+          <td><input type="text" placeholder="e.g. Blue Chair"></td>
+          <td><input type="text" placeholder="e.g. Wooden, good condition"></td>
+        `;
+
+        tableBody.appendChild(row);
+        itemCounter++;
+        fileInput.value = '';  // reset for next upload
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Export table to CSV
+    exportBtn.addEventListener('click', () => {
+      if (tableBody.rows.length === 0) {
+        alert("No items yet!");
+        return;
+      }
+
+      let csv = "Number,Name,Description,Image_Base64\n";
+
+      for (let row of tableBody.rows) {
+        const cells = row.querySelectorAll('td');
+        const num = cells[0].textContent;
+        const name = cells[2].querySelector('input').value.replace(/"/g, '""');
+        const desc = cells[3].querySelector('input').value.replace(/"/g, '""');
+        const imgSrc = cells[1].querySelector('img').src;
+
+        csv += `"${num}","${name}","${desc}","${imgSrc}"\n`;
+      }
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `inventory_${new Date().toISOString().slice(0,10)}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+
+</body>
+</html>

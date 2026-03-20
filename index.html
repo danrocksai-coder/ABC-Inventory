@@ -1,206 +1,899 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="light">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Image to Spreadsheet Utility</title>
-	<style>
-		:root {
-			--primary: #2563eb;
-			--bg: #f8fafc;
-			--card: #ffffff;
-			--text: #1e293b;
-		}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Spreadsheet Pro V3.6 – Stability + 50 Image Limit</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --highlight: #fefce8;
+      --highlight-border: #ca8a04;
+      --accent: #f59e0b;
+      --border: #e2e8f0;
+      --success: #059669;
+      --danger: #ef4444;
+    }
 
-		body {
-			font-family: -apple-system, system-ui, sans-serif;
-			background: var(--bg);
-			color: var(--text);
-			padding: 2rem;
-		}
+    [data-theme="dark"] {
+      --primary: #60a5fa;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --highlight: #78350f;
+      --highlight-border: #fbbf24;
+      --accent: #d97706;
+      --border: #334155;
+      --success: #10b981;
+      --danger: #f87171;
+    }
 
-		.container {
-			max-width: 1000px;
-			margin: 0 auto;
-		}
+    body {
+      font-family: system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 1rem;
+      transition: background 0.3s, color 0.3s;
+    }
 
-		.header {
-			text-align: center;
-			margin-bottom: 2rem;
-		}
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
-		.upload-area {
-			background: var(--card);
-			border: 2px dashed #cbd5e1;
-			padding: 2rem;
-			border-radius: 12px;
-			text-align: center;
-			cursor: pointer;
-			transition: border-color 0.3s;
-		}
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      gap: 1rem;
+    }
 
-		.upload-area:hover {
-			border-color: var(--primary);
-		}
+    .panel {
+      background: var(--card);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 10px -2px rgba(0,0,0,0.08);
+    }
 
-		.image-grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-			gap: 1.5rem;
-			margin-top: 2rem;
-		}
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
 
-		.image-card {
-			background: var(--card);
-			padding: 1rem;
-			border-radius: 8px;
-			box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-		}
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin: 1rem 0;
+      align-items: center;
+    }
 
-		.preview-img {
-			width: 100%;
-			height: 150px;
-			object-fit: cover;
-			border-radius: 4px;
-			margin-bottom: 0.5rem;
-		}
+    .upload-zone {
+      border: 2px dashed var(--border);
+      padding: 2.5rem;
+      text-align: center;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-bottom: 1.5rem;
+      background: var(--card);
+    }
 
-		label {
-			display: block;
-			font-size: 0.8rem;
-			font-weight: bold;
-			margin-top: 0.5rem;
-			color: #64748b;
-		}
+    .upload-zone:hover {
+      border-color: var(--primary);
+      background: rgba(37,99,235,0.05);
+    }
 
-		input,
-		textarea {
-			width: 100%;
-			padding: 0.5rem;
-			margin-top: 0.2rem;
-			border: 1px solid #e2e8f0;
-			border-radius: 4px;
-			box-sizing: border-box;
-			font-family: inherit;
-		}
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
 
-		.actions {
-			margin-top: 2rem;
-			display: flex;
-			gap: 1rem;
-			justify-content: center;
-		}
+    .image-card {
+      background: var(--card);
+      padding: 1.2rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      position: relative;
+      transition: transform 0.2s;
+      cursor: grab;
+    }
 
-		button {
-			padding: 0.8rem 1.5rem;
-			border: none;
-			border-radius: 6px;
-			font-weight: 600;
-			cursor: pointer;
-			transition: opacity 0.2s;
-		}
+    .image-card:hover {
+      transform: translateY(-3px);
+    }
 
-		.btn-export {
-			background: #059669;
-			color: white;
-		}
+    .image-card.dragging {
+      opacity: 0.65;
+      transform: scale(0.97);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
 
-		.btn-clear {
-			background: #ef4444;
-			color: white;
-		}
+    .preview-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 0.8rem;
+      border: 1px solid var(--border);
+      background: #ddd;
+    }
 
-		button:hover {
-			opacity: 0.9;
-		}
-	</style>
+    .counter-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 3px 9px;
+      border-radius: 5px;
+      font-size: 0.78rem;
+      backdrop-filter: blur(4px);
+    }
+
+    label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 0.8rem 0 0.3rem;
+      display: block;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      box-sizing: border-box;
+      font: inherit;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    input.changed,
+    textarea.changed,
+    select.changed {
+      background: var(--highlight);
+      border-color: var(--highlight-border);
+    }
+
+    .btn {
+      padding: 0.75rem 1.3rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-success { background: var(--success); color: white; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-accent { background: var(--accent); color: white; }
+    .btn-secondary { background: var(--muted); color: white; }
+
+    .status {
+      font-weight: 600;
+      color: var(--primary);
+      margin-left: auto;
+      font-size: 0.95rem;
+    }
+
+    .last-saved {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.6rem;
+    }
+
+    .error {
+      color: var(--danger);
+      font-weight: 500;
+      margin-top: 0.5rem;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .project-row {
+      margin: 0.5rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .project-row strong {
+      margin-right: 0.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .image-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .status {
+        margin-left: 0;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-	<div class="container">
-		<div class="header">
-			<h1>📸 Image to Spreadsheet Tool</h1>
-			<p>Upload images to generate descriptions and a CSV manifest for your project.</p>
-		</div>
+<div class="container">
+  <div class="header">
+    <h1>📸 Image Spreadsheet Pro <small>V3.6 – Stability + 50 Image Limit</small></h1>
+    <button onclick="toggleTheme()" id="themeBtn" class="btn" style="font-size:1.4rem; padding:0.5rem 0.9rem;">🌙</button>
+  </div>
 
-		<div class="upload-area" onclick="document.getElementById('fileInput').click()">
-			<p>Click to upload or drag and drop images</p>
-			<input type="file" id="fileInput" multiple accept="image/*" style="display:none">
-		</div>
+  <div class="panel">
+    <div class="meta-grid">
+      <div>
+        <label for="projectName">Project Name <small>(required)</small></label>
+        <input id="projectName" placeholder="Rug_Lot_A_2026">
+      </div>
+      <div>
+        <label for="clientName">Client / Batch</label>
+        <input id="clientName" placeholder="ABC Rugs – March Sale">
+      </div>
+    </div>
 
-		<div class="image-grid" id="imageGrid"></div>
+    <div class="toolbar">
+      <button class="btn btn-primary" onclick="saveProject()">💾 Save Project</button>
+      <button class="btn btn-secondary" onclick="loadProject()">Load Project</button>
+      <button class="btn btn-success" onclick="exportCSV()">📊 Export CSV</button>
+      <label class="btn btn-primary" style="cursor:pointer;">
+        📥 Import CSV
+        <input type="file" id="csvImport" accept=".csv" hidden onchange="importCSV(event)">
+      </label>
+      <div id="status" class="status">Initializing database...</div>
+    </div>
 
-		<div class="actions" id="actionArea" style="display:none">
-			<button class="btn-export" onclick="exportToCSV()">💾 Export to Spreadsheet (CSV)</button>
-			<button class="btn-clear" onclick="location.reload()">Reset</button>
-		</div>
-	</div>
+    <div style="margin-top:1.2rem;">
+      <label for="bulkPrefix">⚡ Bulk Rename Prefix</label>
+      <div style="display:flex;gap:10px;max-width:500px;">
+        <input id="bulkPrefix" placeholder="vintage-rug" style="flex:1;">
+        <button class="btn btn-accent" onclick="applyBulkRename()">Apply to All</button>
+      </div>
+    </div>
 
-	<script>
-		const fileInput = document.getElementById('fileInput');
-		const imageGrid = document.getElementById('imageGrid');
-		const actionArea = document.getElementById('actionArea');
-		let imageData = [];
+    <div id="lastSaved" class="last-saved"></div>
+    <div id="errorMsg" class="error"></div>
+    <div id="savedProjectsList" style="margin-top:1.2rem; font-size:0.92rem;"></div>
+  </div>
 
-		fileInput.addEventListener('change', handleFiles);
+  <div class="upload-zone" id="uploadZone">
+    <h3>Drop images here or click to upload</h3>
+    <p class="small">Size + date auto-detected • Max 50 images per project</p>
+    <input type="file" id="fileInput" multiple accept="image/*" hidden>
+  </div>
 
-		function handleFiles(e) {
-			const files = Array.from(e.target.files);
-			if (files.length > 0) actionArea.style.display = 'flex';
+  <div id="imageGrid" class="image-grid"></div>
+</div>
 
-			files.forEach(file => {
-				const reader = new FileReader();
-				reader.onload = (event) => {
-					const id = Date.now() + Math.random();
-					const card = document.createElement('div');
-					card.className = 'image-card';
-					card.innerHTML = `
-                    <img src="${event.target.result}" class="preview-img">
-                    <label>Original Filename</label>
-                    <input type="text" value="${file.name}" readonly style="background: #f1f5f9">
-                    
-                    <label>New Optimized Name (e.g., product-01)</label>
-                    <input type="text" class="new-name" placeholder="new-filename-here">
-                    
-                    <label>Description / Alt Text</label>
-                    <textarea class="desc" rows="3" placeholder="Describe this image..."></textarea>
-                `;
-					imageGrid.appendChild(card);
+<script>
+  const DB_NAME = "ImageProDB";
+  const DB_VERSION = 1;
 
-					// Track data
-					imageData.push({
-						originalName: file.name,
-						cardElement: card
-					});
-				};
-				reader.readAsDataURL(file);
-			});
-		}
+  let db;
+  let dbReadyResolve;
+  const dbReady = new Promise(resolve => {
+    dbReadyResolve = resolve;
+  });
 
-		function exportToCSV() {
-			let csvContent = "data:text/csv;charset=utf-8,Original Name,New Name,Description\n";
+  let currentProjectId = null;
+  let imageData = [];
+  let autoSaveTimer = null;
+  let draggedCard = null;
 
-			const cards = document.querySelectorAll('.image-card');
-			cards.forEach(card => {
-				const orig = card.querySelector('input[readonly]').value;
-				const newName = card.querySelector('.new-name').value || "unnamed";
-				const desc = card.querySelector('.desc').value.replace(/,/g, ";"); // Prevent CSV break
+  const projectNameEl = document.getElementById('projectName');
+  const clientNameEl = document.getElementById('clientName');
+  const bulkPrefixEl = document.getElementById('bulkPrefix');
+  const statusEl = document.getElementById('status');
+  const lastSavedEl = document.getElementById('lastSaved');
+  const errorEl = document.getElementById('errorMsg');
+  const grid = document.getElementById('imageGrid');
+  const fileInput = document.getElementById('fileInput');
+  const uploadZone = document.getElementById('uploadZone');
+  const themeBtn = document.getElementById('themeBtn');
+  const savedProjectsListEl = document.getElementById('savedProjectsList');
 
-				csvContent += `"${orig}","${newName}","${desc}"\n`;
-			});
+  const dbRequest = indexedDB.open(DB_NAME, DB_VERSION);
 
-			const encodedUri = encodeURI(csvContent);
-			const link = document.createElement("a");
-			link.setAttribute("href", encodedUri);
-			link.setAttribute("download", "image_metadata_manifest.csv");
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-		}
-	</script>
+  dbRequest.onerror = (e) => {
+    console.error("IndexedDB error:", e);
+    showError("Database error – check browser storage permissions");
+  };
 
+  dbRequest.onsuccess = (e) => {
+    db = e.target.result;
+    dbReadyResolve();
+    listProjects();
+    setStatus('Ready');
+  };
+
+  dbRequest.onupgradeneeded = (e) => {
+    db = e.target.result;
+    if (!db.objectStoreNames.contains("projects")) {
+      db.createObjectStore("projects", { keyPath: "id" });
+    }
+    if (!db.objectStoreNames.contains("images")) {
+      db.createObjectStore("images", { keyPath: "id" });
+    }
+  };
+
+  async function safeDB(action) {
+    await dbReady;
+    try {
+      return await action();
+    } catch (err) {
+      console.error(err);
+      showError("Database operation failed – try again or clear browser storage");
+      return null;
+    }
+  }
+
+  function toggleTheme() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    themeBtn.textContent = isDark ? '🌙' : '☀️';
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  }
+
+  if (
+    localStorage.getItem('theme') === 'dark' ||
+    (!localStorage.getItem('theme') &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches)
+  ) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    themeBtn.textContent = '☀️';
+  }
+
+  uploadZone.onclick = () => fileInput.click();
+
+  fileInput.onchange = (e) => handleFiles(e.target.files);
+
+  uploadZone.ondragover = (e) => {
+    e.preventDefault();
+    uploadZone.style.borderColor = 'var(--primary)';
+  };
+
+  uploadZone.ondragleave = () => {
+    uploadZone.style.borderColor = 'var(--border)';
+  };
+
+  uploadZone.ondrop = (e) => {
+    e.preventDefault();
+    uploadZone.style.borderColor = 'var(--border)';
+    handleFiles(e.dataTransfer.files);
+  };
+
+  async function handleFiles(files) {
+    await safeDB(async () => {
+      if (imageData.length >= 50) {
+        alert("Maximum 50 images per batch reached.\n\nStart a new project for the next set.");
+        return;
+      }
+
+      const remainingSlots = 50 - imageData.length;
+      const incomingFiles = Array.from(files);
+
+      let filesToAdd = incomingFiles;
+
+      if (incomingFiles.length > remainingSlots) {
+        const proceed = confirm(
+          `You can only add ${remainingSlots} more image${remainingSlots === 1 ? '' : 's'} to stay under the 50-image limit.\n\n` +
+          `Only the first ${remainingSlots} will be added — the rest will be ignored.\n\nContinue?`
+        );
+        if (!proceed) {
+          setStatus("Upload cancelled");
+          return;
+        }
+        filesToAdd = incomingFiles.slice(0, remainingSlots);
+      }
+
+      if (filesToAdd.length === 0) return;
+
+      const ts = Date.now();
+      const itemsToAdd = [];
+
+      for (let i = 0; i < filesToAdd.length; i++) {
+        const file = filesToAdd[i];
+        const imageId = `img_${ts}_${i}`;
+        const metaId = `meta_${ts}_${i}`;
+
+        itemsToAdd.push({
+          meta: {
+            id: metaId,
+            imageId,
+            originalName: file.name,
+            newName: '',
+            title: '',
+            category: '',
+            condition: '',
+            quantity: '1',
+            estimatedPrice: '',
+            description: '',
+            notes: `Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`,
+            detectedDate: new Date(file.lastModified).toLocaleDateString()
+          },
+          file,
+          imageId
+        });
+      }
+
+      const tx = db.transaction("images", "readwrite");
+      const store = tx.objectStore("images");
+
+      itemsToAdd.forEach(item => {
+        store.put({ id: item.imageId, blob: item.file });
+        imageData.push(item.meta);
+      });
+
+      tx.oncomplete = () => {
+        renderCards();
+        scheduleAutoSave();
+        setStatus(`${imageData.length} / 50 items`);
+      };
+
+      tx.onerror = () => {
+        showError("Failed to store some images");
+      };
+    });
+  }
+
+  async function renderCards() {
+    await safeDB(async () => {
+      grid.innerHTML = '';
+
+      const loadPromises = imageData.map(async (meta, index) => {
+        const tx = db.transaction("images", "readonly");
+        const req = tx.objectStore("images").get(meta.imageId);
+
+        return new Promise(resolve => {
+          req.onsuccess = (e) => {
+            const blob = e.target.result?.blob;
+            const url = blob ? URL.createObjectURL(blob) : '';
+            resolve({
+              card: createCardElement(meta, index, url),
+              url
+            });
+          };
+          req.onerror = () => {
+            resolve({
+              card: createCardElement(meta, index, ''),
+              url: ''
+            });
+          };
+        });
+      });
+
+      const results = await Promise.all(loadPromises);
+
+      results.forEach(({ card, url }) => {
+        grid.appendChild(card);
+        if (url) {
+          setTimeout(() => URL.revokeObjectURL(url), 15000);
+        }
+      });
+
+      grid.querySelectorAll('input:not([readonly]), textarea, select').forEach(el => {
+        el.addEventListener('input', updateField);
+        el.addEventListener('change', updateField);
+      });
+    });
+  }
+
+  function createCardElement(meta, index, imgUrl) {
+    const card = document.createElement('div');
+    card.className = 'image-card';
+    card.draggable = true;
+    card.dataset.metaId = meta.id;
+
+    card.innerHTML = `
+      <span class="counter-badge">#${index + 1}</span>
+      <img src="${imgUrl}" class="preview-img" alt="preview">
+      <label>Original</label>
+      <input type="text" value="${escapeHtml(meta.originalName)}" readonly>
+
+      <label>New Name</label>
+      <input type="text" value="${escapeHtml(meta.newName)}" data-field="newName">
+
+      <label>Title</label>
+      <input type="text" value="${escapeHtml(meta.title)}" data-field="title">
+
+      <label>Category</label>
+      <input type="text" value="${escapeHtml(meta.category)}" data-field="category">
+
+      <label>Condition</label>
+      <select data-field="condition">
+        <option value="">—</option>
+        <option value="New" ${meta.condition === 'New' ? 'selected' : ''}>New</option>
+        <option value="Like New" ${meta.condition === 'Like New' ? 'selected' : ''}>Like New</option>
+        <option value="Excellent" ${meta.condition === 'Excellent' ? 'selected' : ''}>Excellent</option>
+        <option value="Very Good" ${meta.condition === 'Very Good' ? 'selected' : ''}>Very Good</option>
+        <option value="Good" ${meta.condition === 'Good' ? 'selected' : ''}>Good</option>
+        <option value="Fair" ${meta.condition === 'Fair' ? 'selected' : ''}>Fair</option>
+      </select>
+
+      <label>Quantity</label>
+      <input type="number" min="1" value="${escapeHtml(meta.quantity)}" data-field="quantity">
+
+      <label>Est. Price</label>
+      <input type="text" value="${escapeHtml(meta.estimatedPrice)}" data-field="estimatedPrice">
+
+      <label>Description</label>
+      <textarea rows="3" data-field="description">${escapeHtml(meta.description)}</textarea>
+
+      <label>Notes</label>
+      <textarea rows="2" data-field="notes">${escapeHtml(meta.notes)}</textarea>
+
+      <div style="font-size:0.78rem; color:var(--muted); margin-top:8px;">
+        Detected: ${escapeHtml(meta.detectedDate)}
+      </div>
+
+      <button class="btn btn-danger" style="margin-top:1rem; width:100%;" onclick="deleteCard('${meta.id}')">Remove</button>
+    `;
+
+    return card;
+  }
+
+  function updateField(e) {
+    const field = e.target.dataset.field;
+    const card = e.target.closest('.image-card');
+    if (!card || !field) return;
+
+    const metaId = card.dataset.metaId;
+    const item = imageData.find(m => m.id === metaId);
+
+    if (item) {
+      const old = item[field];
+      item[field] = e.target.value;
+
+      if (old !== item[field]) {
+        e.target.classList.add('changed');
+      } else {
+        e.target.classList.remove('changed');
+      }
+
+      scheduleAutoSave();
+    }
+  }
+
+  function deleteCard(metaId) {
+    if (!confirm('Remove this item?')) return;
+
+    const item = imageData.find(m => m.id === metaId);
+    if (item) {
+      db.transaction("images", "readwrite").objectStore("images").delete(item.imageId);
+      imageData = imageData.filter(m => m.id !== metaId);
+      renderCards();
+      scheduleAutoSave();
+    }
+  }
+
+  function applyBulkRename() {
+    const prefix = bulkPrefixEl.value.trim();
+    if (!prefix) {
+      alert('Enter a prefix');
+      return;
+    }
+
+    const pad = imageData.length >= 100 ? 3 : imageData.length >= 10 ? 2 : 1;
+
+    imageData.forEach((item, i) => {
+      item.newName = `${prefix}-${String(i + 1).padStart(pad, '0')}`;
+    });
+
+    renderCards();
+    scheduleAutoSave();
+  }
+
+  function scheduleAutoSave() {
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(() => {
+      if (projectNameEl.value.trim()) saveProject(true);
+    }, 18000);
+  }
+
+  async function saveProject(silent = false) {
+    await safeDB(async () => {
+      const name = projectNameEl.value.trim();
+      if (!name) {
+        if (!silent) alert('Project name required');
+        return;
+      }
+
+      const tx = db.transaction("projects", "readwrite");
+      const store = tx.objectStore("projects");
+
+      const payload = {
+        id: currentProjectId || 'proj_' + Date.now(),
+        projectName: name,
+        clientName: clientNameEl.value.trim(),
+        updatedAt: new Date().toISOString(),
+        items: imageData.map(m => ({ ...m }))
+      };
+
+      const req = store.put(payload);
+
+      req.onsuccess = () => {
+        currentProjectId = payload.id;
+        lastSavedEl.textContent = `Last saved: ${new Date().toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}`;
+        document.querySelectorAll('.changed').forEach(el => el.classList.remove('changed'));
+        if (!silent) setStatus(`Saved: ${name}`);
+        listProjects();
+      };
+
+      req.onerror = () => {
+        showError("Save failed – storage may be full");
+      };
+    });
+  }
+
+  function loadProject() {
+    listProjects();
+    setStatus('Choose a project below');
+  }
+
+  async function loadProjectById(id) {
+    await safeDB(async () => {
+      const tx = db.transaction("projects", "readonly");
+      const req = tx.objectStore("projects").get(id);
+
+      req.onsuccess = (e) => {
+        const proj = e.target.result;
+        if (!proj) {
+          showError('Project not found');
+          return;
+        }
+
+        currentProjectId = proj.id;
+        projectNameEl.value = proj.projectName || '';
+        clientNameEl.value = proj.clientName || '';
+        imageData = proj.items || [];
+
+        renderCards();
+        lastSavedEl.textContent = `Last saved: ${new Date(proj.updatedAt).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}`;
+        setStatus(`Loaded: ${proj.projectName}`);
+      };
+    });
+  }
+
+  async function deleteProject(id) {
+    if (!confirm('Delete project and its images?')) return;
+
+    await safeDB(async () => {
+      const tx = db.transaction(["projects", "images"], "readwrite");
+      const projReq = tx.objectStore("projects").get(id);
+
+      projReq.onsuccess = (e) => {
+        const proj = e.target.result;
+
+        if (proj) {
+          proj.items.forEach(item => {
+            tx.objectStore("images").delete(item.imageId);
+          });
+
+          tx.objectStore("projects").delete(id);
+
+          if (currentProjectId === id) {
+            currentProjectId = null;
+            imageData = [];
+            renderCards();
+            lastSavedEl.textContent = '';
+            projectNameEl.value = '';
+            clientNameEl.value = '';
+          }
+
+          listProjects();
+          setStatus('Project deleted');
+        }
+      };
+    });
+  }
+
+  async function listProjects() {
+    await safeDB(async () => {
+      db.transaction("projects", "readonly").objectStore("projects").getAll().onsuccess = (e) => {
+        const projects = e.target.result;
+
+        savedProjectsListEl.innerHTML = projects.length
+          ? projects.map(p => `
+              <div class="project-row">
+                <strong>${escapeHtml(p.projectName)}</strong>
+                ${p.clientName ? `— ${escapeHtml(p.clientName)}` : ''}
+                <button class="btn btn-secondary" style="font-size:0.85rem; padding:5px 10px;" onclick="loadProjectById('${p.id}')">Load</button>
+                <button class="btn btn-danger" style="font-size:0.85rem; padding:5px 10px;" onclick="deleteProject('${p.id}')">Delete</button>
+              </div>
+            `).join('')
+          : '<em>No saved projects yet</em>';
+      };
+    });
+  }
+
+  function exportCSV() {
+    if (!imageData.length) {
+      alert('No data');
+      return;
+    }
+
+    const name = projectNameEl.value.trim() || 'project';
+    let csv = 'Row,Original Name,New Name,Title,Category,Condition,Quantity,Est. Price,Description,Notes\n';
+
+    imageData.forEach((item, i) => {
+      csv += `${i + 1},"${csvSafe(item.originalName)}","${csvSafe(item.newName)}","${csvSafe(item.title)}","${csvSafe(item.category)}","${csvSafe(item.condition)}","${csvSafe(item.quantity)}","${csvSafe(item.estimatedPrice)}","${csvSafe((item.description || '').replace(/\n/g, ' '))}","${csvSafe((item.notes || '').replace(/\n/g, ' '))}"\n`;
+    });
+
+    const link = document.createElement('a');
+    link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    link.download = `${name.replace(/[^a-z0-9]/gi, '_')}_manifest.csv`;
+    link.click();
+    setStatus('CSV exported');
+  }
+
+  function importCSV(e) {
+    alert("CSV import loads metadata only.\n\nYou must re-upload the actual images for previews to appear.");
+
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const lines = ev.target.result.split(/\r?\n/);
+      if (lines.length < 2) {
+        showError('Empty or invalid CSV');
+        return;
+      }
+
+      const headers = lines[0]
+        .toLowerCase()
+        .split(',')
+        .map(h => h.trim().replace(/^"|"$/g, ''));
+
+      imageData = lines.slice(1).filter(l => l.trim()).map((line, idx) => {
+        const cols = line
+          .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
+          .map(c => c.trim().replace(/^"|"$/g, '').replace(/""/g, '"'));
+
+        const obj = {
+          id: 'meta_import_' + Date.now() + idx,
+          imageId: 'img_import_' + Date.now() + idx,
+          originalName: 'imported',
+          newName: '',
+          title: '',
+          category: '',
+          condition: '',
+          quantity: '1',
+          estimatedPrice: '',
+          description: '',
+          notes: '',
+          detectedDate: new Date().toLocaleDateString()
+        };
+
+        headers.forEach((h, i) => {
+          if (h.includes('new name') || h.includes('newname')) obj.newName = cols[i] || '';
+          if (h.includes('title')) obj.title = cols[i] || '';
+          if (h.includes('category')) obj.category = cols[i] || '';
+          if (h.includes('condition')) obj.condition = cols[i] || '';
+          if (h.includes('quantity')) obj.quantity = cols[i] || '1';
+          if (h.includes('price') || h.includes('est')) obj.estimatedPrice = cols[i] || '';
+          if (h.includes('desc')) obj.description = cols[i] || '';
+          if (h.includes('notes')) obj.notes = cols[i] || '';
+        });
+
+        return obj;
+      });
+
+      renderCards();
+      setStatus(`Imported ${imageData.length} rows (re-upload images)`);
+      scheduleAutoSave();
+    };
+
+    reader.readAsText(file);
+  }
+
+  function setStatus(msg, duration = 3000) {
+    statusEl.textContent = msg;
+    if (duration) {
+      setTimeout(() => {
+        statusEl.textContent = `${imageData.length} items`;
+      }, duration);
+    }
+  }
+
+  function showError(msg) {
+    errorEl.textContent = msg;
+    setTimeout(() => {
+      errorEl.textContent = '';
+    }, 8000);
+  }
+
+  function csvSafe(value) {
+    return String(value || '').replace(/"/g, '""');
+  }
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  grid.ondragstart = (e) => {
+    draggedCard = e.target.closest('.image-card');
+    if (draggedCard) draggedCard.classList.add('dragging');
+  };
+
+  grid.ondragend = () => {
+    if (draggedCard) {
+      draggedCard.classList.remove('dragging');
+      const newOrderIds = Array.from(grid.children).map(card => card.dataset.metaId);
+      imageData = newOrderIds
+        .map(id => imageData.find(m => m.id === id))
+        .filter(Boolean);
+      scheduleAutoSave();
+      renderCards();
+    }
+    draggedCard = null;
+  };
+
+  grid.ondragover = (e) => {
+    e.preventDefault();
+    if (!draggedCard) return;
+
+    const afterElement = getDragAfterElement(grid, e.clientY);
+    if (afterElement == null) {
+      grid.appendChild(draggedCard);
+    } else {
+      grid.insertBefore(draggedCard, afterElement);
+    }
+  };
+
+  function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('.image-card:not(.dragging)')];
+    return draggableElements.reduce((closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset, element: child };
+      }
+      return closest;
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+  }
+
+  setStatus('Initializing database...');
+</script>
 </body>
-
 </html>

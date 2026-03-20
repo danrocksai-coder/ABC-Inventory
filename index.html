@@ -1,660 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dan Rock Inventory Tool - Offline</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 16px;
-      background: #f7f7f7;
-      color: #111;
-    }
-    h1, h2 {
-      margin-bottom: 8px;
-    }
-    .card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-    .grid {
-      display: grid;
-      gap: 10px;
-    }
-    .grid-2 {
-      grid-template-columns: 1fr 1fr;
-    }
-    label {
-      font-size: 14px;
-      font-weight: 600;
-      display: block;
-      margin-bottom: 4px;
-    }
-    input[type="text"], textarea {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 15px;
-    }
-    textarea {
-      min-height: 80px;
-      resize: vertical;
-    }
-    button {
-      padding: 10px 14px;
-      border: none;
-      border-radius: 8px;
-      background: #111;
-      color: white;
-      font-size: 15px;
-      cursor: pointer;
-      margin-right: 8px;
-      margin-bottom: 8px;
-    }
-    button.secondary {
-      background: #666;
-    }
-    button.danger {
-      background: #b00020;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-    }
-    th, td {
-      border-bottom: 1px solid #ddd;
-      padding: 8px;
-      vertical-align: top;
-      text-align: left;
-    }
-    th {
-      background: #f1f1f1;
-    }
-    .thumb {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 6px;
-      border: 1px solid #ddd;
-    }
-    .small {
-      font-size: 12px;
-      color: #555;
-    }
-    .top-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .counter {
-      font-size: 18px;
-      font-weight: 700;
-      margin-top: 8px;
-    }
-    @media (max-width: 700px) {
-      .grid-2 {
-        grid-template-columns: 1fr;
-      }
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-      thead {
-        display: none;
-      }
-      tr {
-        margin-bottom: 12px;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-        padding: 10px;
-      }
-      td {
-        border: none;
-        padding: 6px 0;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dan Rock Inventory Tool V2</title>
+
+<style>
+body {
+  font-family: Arial;
+  margin: 16px;
+  background: #f5f5f5;
+}
+
+.card {
+  background: white;
+  padding: 14px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: black;
+  color: white;
+  margin: 5px 0;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.hidden {
+  display: none;
+}
+</style>
 </head>
+
 <body>
-  <h1>Dan Rock Inventory Tool</h1>
-  <div class="small">Fully offline version. No CDN. No API. No hidden uploads. Data stays in this browser unless you export it.</div>
 
-  <div class="card">
-    <h2>Project Info</h2>
-    <div class="grid grid-2">
-      <div>
-        <label for="clientName">Client Name</label>
-        <input id="clientName" type="text" placeholder="ABC Rugs / Homeowner Name" />
-      </div>
-      <div>
-        <label for="projectName">Project Name</label>
-        <input id="projectName" type="text" placeholder="Garage Inventory / Batch 01" />
-      </div>
-    </div>
-    <div style="margin-top:10px;">
-      <label for="projectNotes">Project Notes</label>
-      <textarea id="projectNotes" placeholder="Exact measurements available upon request. Contact for details."></textarea>
-    </div>
-    <div class="top-actions" style="margin-top:12px;">
-      <button id="saveProjectBtn">Save Project Info</button>
-      <button id="clearProjectBtn" class="danger">Clear Entire Project</button>
-    </div>
-  </div>
+<h1>Inventory Tool V2</h1>
 
-  <div class="card">
-    <h2>Add Items</h2>
-    <div class="top-actions">
-      <input id="fileInput" type="file" accept="image/*" capture="environment" multiple style="display:none;" />
-      <button id="takePhotoBtn">Take / Add Photos</button>
-      <button id="exportCsvBtn">Export CSV</button>
-      <button id="exportTxtBtn" class="secondary">Export Summary TXT</button>
-      <button id="exportJsonBtn" class="secondary">Export JSON Backup</button>
-      <button id="downloadImagesBtn" class="secondary">Download All Images</button>
-    </div>
-    <div id="itemCounter" class="counter">Item Count: 0</div>
-  </div>
+<!-- PROJECT LIST -->
+<div id="projectList" class="card">
+  <h2>Projects</h2>
+  <div id="projectsContainer"></div>
+  <button onclick="createProject()">+ New Project</button>
+</div>
 
-  <div class="card">
-    <h2>Inventory Items</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Image</th>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Image File</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
-  </div>
+<!-- PROJECT VIEW -->
+<div id="projectView" class="card hidden">
+  <button onclick="goBack()">← Back</button>
 
-  <script>
-    const DB_NAME = 'DanInventoryDB_Offline';
-    const DB_VERSION = 1;
-    const ITEM_STORE = 'items';
-    const META_STORE = 'meta';
-    const PROJECT_META_KEY = 'projectMeta';
+  <h2 id="projectTitle"></h2>
 
-    let db = null;
+  <input id="clientName" placeholder="Client Name">
+  <input id="projectName" placeholder="Project Name">
 
-    const fileInput = document.getElementById('fileInput');
-    const takePhotoBtn = document.getElementById('takePhotoBtn');
-    const exportCsvBtn = document.getElementById('exportCsvBtn');
-    const exportTxtBtn = document.getElementById('exportTxtBtn');
-    const exportJsonBtn = document.getElementById('exportJsonBtn');
-    const downloadImagesBtn = document.getElementById('downloadImagesBtn');
-    const saveProjectBtn = document.getElementById('saveProjectBtn');
-    const clearProjectBtn = document.getElementById('clearProjectBtn');
-    const tableBody = document.getElementById('tableBody');
-    const itemCounter = document.getElementById('itemCounter');
+  <button onclick="saveProjectMeta()">Save Project Info</button>
 
-    const clientNameInput = document.getElementById('clientName');
-    const projectNameInput = document.getElementById('projectName');
-    const projectNotesInput = document.getElementById('projectNotes');
+  <hr>
 
-    window.addEventListener('load', async () => {
-      try {
-        db = await openDB();
-        await loadProjectMeta();
-        await renderItems();
-      } catch (err) {
-        console.error(err);
-        alert('Could not open inventory database.');
-      }
+  <input type="file" id="fileInput" accept="image/*" capture="environment">
+  <button onclick="addPhoto()">Add Photo</button>
+
+  <div id="itemsContainer"></div>
+
+  <button onclick="exportCSV()">Export CSV</button>
+</div>
+
+<script>
+let db;
+
+const request = indexedDB.open("InventoryV2", 1);
+
+request.onupgradeneeded = e => {
+  db = e.target.result;
+  db.createObjectStore("projects", { keyPath: "id" });
+};
+
+request.onsuccess = e => {
+  db = e.target.result;
+  loadProjects();
+};
+
+function loadProjects() {
+  const tx = db.transaction("projects", "readonly");
+  const store = tx.objectStore("projects");
+  const req = store.getAll();
+
+  req.onsuccess = () => {
+    const container = document.getElementById("projectsContainer");
+    container.innerHTML = "";
+
+    req.result.forEach(p => {
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <b>${p.name || "Untitled"}</b>
+        <button onclick="openProject('${p.id}')">Open</button>
+        <button onclick="deleteProject('${p.id}')">Delete</button>
+      `;
+      container.appendChild(div);
     });
+  };
+}
 
-    takePhotoBtn.addEventListener('click', () => fileInput.click());
+function createProject() {
+  const id = Date.now().toString();
 
-    fileInput.addEventListener('change', async (e) => {
-      const files = Array.from(e.target.files || []);
-      if (!files.length) return;
+  const tx = db.transaction("projects", "readwrite");
+  const store = tx.objectStore("projects");
 
-      for (const file of files) {
-        try {
-          const processed = await processImage(file, 1400, 0.8);
-          await saveItem({
-            name: '',
-            desc: '',
-            imageBlob: processed.blob,
-            imageName: makeSafeFilename(file.name || `item_${Date.now()}.jpg`)
-          });
-        } catch (err) {
-          console.error('Image processing failed:', err);
-          alert('An image failed to load.');
-        }
-      }
+  store.add({
+    id,
+    name: "New Project",
+    client: "",
+    items: []
+  });
 
-      fileInput.value = '';
-      await renderItems();
-    });
+  loadProjects();
+}
 
-    saveProjectBtn.addEventListener('click', async () => {
-      await saveProjectMeta();
-      alert('Project info saved.');
-    });
+function deleteProject(id) {
+  const tx = db.transaction("projects", "readwrite");
+  tx.objectStore("projects").delete(id);
+  loadProjects();
+}
 
-    clearProjectBtn.addEventListener('click', async () => {
-      const confirmed = confirm('This will delete ALL items and project info from this browser. Continue?');
-      if (!confirmed) return;
+let currentProject = null;
 
-      await clearAllData();
-      clientNameInput.value = '';
-      projectNameInput.value = '';
-      projectNotesInput.value = '';
-      await renderItems();
-      alert('Project cleared.');
-    });
+function openProject(id) {
+  const tx = db.transaction("projects", "readonly");
+  const store = tx.objectStore("projects");
 
-    exportCsvBtn.addEventListener('click', async () => {
-      const items = await getAllItems();
-      if (!items.length) {
-        alert('No items to export.');
-        return;
-      }
+  store.get(id).onsuccess = e => {
+    currentProject = e.target.result;
 
-      let csv = 'Number,Name,Description,Image_File\n';
+    document.getElementById("projectList").classList.add("hidden");
+    document.getElementById("projectView").classList.remove("hidden");
 
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        const number = i + 1;
-        const name = escapeCSV(item.name || '');
-        const desc = escapeCSV(item.desc || '');
-        const ext = getImageExtension(item.imageName, item.imageBlob?.type);
-        const imageFileName = `item_${String(number).padStart(3, '0')}.${ext}`;
-        csv += `"${number}","${name}","${desc}","${imageFileName}"\n`;
-      }
+    document.getElementById("projectTitle").innerText = currentProject.name;
+    document.getElementById("clientName").value = currentProject.client;
+    document.getElementById("projectName").value = currentProject.name;
 
-      downloadText(csv, `${getProjectSlug()}_inventory.csv`, 'text/csv;charset=utf-8;');
-    });
+    renderItems();
+  };
+}
 
-    exportTxtBtn.addEventListener('click', async () => {
-      const items = await getAllItems();
-      const meta = await getProjectMeta();
+function goBack() {
+  document.getElementById("projectView").classList.add("hidden");
+  document.getElementById("projectList").classList.remove("hidden");
+  loadProjects();
+}
 
-      const summary = [
-        `Client Name: ${meta.clientName || ''}`,
-        `Project Name: ${meta.projectName || ''}`,
-        `Item Count: ${items.length}`,
-        `Export Date: ${new Date().toLocaleString()}`,
-        '',
-        'Project Notes:',
-        meta.projectNotes || ''
-      ].join('\n');
+function saveProjectMeta() {
+  currentProject.client = document.getElementById("clientName").value;
+  currentProject.name = document.getElementById("projectName").value;
 
-      downloadText(summary, `${getProjectSlug()}_summary.txt`, 'text/plain;charset=utf-8;');
-    });
+  const tx = db.transaction("projects", "readwrite");
+  tx.objectStore("projects").put(currentProject);
 
-    exportJsonBtn.addEventListener('click', async () => {
-      const items = await getAllItems();
-      const meta = await getProjectMeta();
-
-      const exportData = {
-        meta,
-        exportedAt: new Date().toISOString(),
-        items: await Promise.all(items.map(async (item, index) => ({
-          number: index + 1,
-          name: item.name || '',
-          desc: item.desc || '',
-          imageName: item.imageName || '',
-          imageBase64: item.imageBlob ? await blobToBase64(item.imageBlob) : ''
-        })))
-      };
-
-      downloadText(
-        JSON.stringify(exportData, null, 2),
-        `${getProjectSlug()}_backup.json`,
-        'application/json;charset=utf-8;'
-      );
-    });
-
-    downloadImagesBtn.addEventListener('click', async () => {
-      const items = await getAllItems();
-      if (!items.length) {
-        alert('No images to download.');
-        return;
-      }
-
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        if (!item.imageBlob) continue;
-
-        const number = i + 1;
-        const ext = getImageExtension(item.imageName, item.imageBlob?.type);
-        const imageFileName = `item_${String(number).padStart(3, '0')}.${ext}`;
-        downloadBlob(item.imageBlob, imageFileName);
-
-        await delay(250);
-      }
-
-      alert('Image downloads started. Your browser may ask where to save them.');
-    });
-
-    async function openDB() {
-      return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_NAME, DB_VERSION);
-
-        request.onupgradeneeded = (event) => {
-          const database = event.target.result;
-
-          if (!database.objectStoreNames.contains(ITEM_STORE)) {
-            const itemStore = database.createObjectStore(ITEM_STORE, {
-              keyPath: 'id',
-              autoIncrement: true
-            });
-            itemStore.createIndex('createdAt', 'createdAt', { unique: false });
-          }
-
-          if (!database.objectStoreNames.contains(META_STORE)) {
-            database.createObjectStore(META_STORE, { keyPath: 'key' });
-          }
-        };
-
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-      });
-    }
-
-    async function saveItem(item) {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(ITEM_STORE, 'readwrite');
-        const store = tx.objectStore(ITEM_STORE);
-        const request = store.add({
-          name: item.name || '',
-          desc: item.desc || '',
-          imageBlob: item.imageBlob || null,
-          imageName: item.imageName || '',
-          createdAt: Date.now()
-        });
-
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-      });
-    }
-
-    async function updateItem(id, data) {
-      const existing = await getItem(id);
-      if (!existing) return;
-
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(ITEM_STORE, 'readwrite');
-        const store = tx.objectStore(ITEM_STORE);
-        const request = store.put({
-          ...existing,
-          ...data
-        });
-
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject(request.error);
-      });
-    }
-
-    async function getItem(id) {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(ITEM_STORE, 'readonly');
-        const store = tx.objectStore(ITEM_STORE);
-        const request = store.get(id);
-
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-      });
-    }
-
-    async function getAllItems() {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(ITEM_STORE, 'readonly');
-        const store = tx.objectStore(ITEM_STORE);
-        const request = store.getAll();
-
-        request.onsuccess = () => {
-          const results = request.result || [];
-          results.sort((a, b) => a.createdAt - b.createdAt);
-          resolve(results);
-        };
-        request.onerror = () => reject(request.error);
-      });
-    }
-
-    async function deleteItem(id) {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(ITEM_STORE, 'readwrite');
-        const store = tx.objectStore(ITEM_STORE);
-        const request = store.delete(id);
-
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject(request.error);
-      });
-    }
-
-    async function saveProjectMeta() {
-      const data = {
-        key: PROJECT_META_KEY,
-        clientName: clientNameInput.value.trim(),
-        projectName: projectNameInput.value.trim(),
-        projectNotes: projectNotesInput.value.trim()
-      };
-
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(META_STORE, 'readwrite');
-        const store = tx.objectStore(META_STORE);
-        const request = store.put(data);
-
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject(request.error);
-      });
-    }
-
-    async function getProjectMeta() {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(META_STORE, 'readonly');
-        const store = tx.objectStore(META_STORE);
-        const request = store.get(PROJECT_META_KEY);
-
-        request.onsuccess = () => {
-          resolve(request.result || {
-            clientName: '',
-            projectName: '',
-            projectNotes: ''
-          });
-        };
-        request.onerror = () => reject(request.error);
-      });
-    }
-
-    async function loadProjectMeta() {
-      const meta = await getProjectMeta();
-      clientNameInput.value = meta.clientName || '';
-      projectNameInput.value = meta.projectName || '';
-      projectNotesInput.value = meta.projectNotes || '';
-    }
-
-    async function clearAllData() {
-      await new Promise((resolve, reject) => {
-        const tx = db.transaction(ITEM_STORE, 'readwrite');
-        const store = tx.objectStore(ITEM_STORE);
-        const request = store.clear();
-
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject(request.error);
-      });
-
-      await new Promise((resolve, reject) => {
-        const tx = db.transaction(META_STORE, 'readwrite');
-        const store = tx.objectStore(META_STORE);
-        const request = store.clear();
-
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject(request.error);
-      });
-    }
-
-    async function renderItems() {
-      const items = await getAllItems();
-      tableBody.innerHTML = '';
-
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        const row = document.createElement('tr');
-
-        const numberCell = document.createElement('td');
-        numberCell.textContent = i + 1;
-
-        const imageCell = document.createElement('td');
-        const img = document.createElement('img');
-        img.className = 'thumb';
-        img.alt = 'Inventory image';
-        img.src = URL.createObjectURL(item.imageBlob);
-        imageCell.appendChild(img);
-
-        const nameCell = document.createElement('td');
-        const nameInput = document.createElement('input');
-        nameInput.type = 'text';
-        nameInput.value = item.name || '';
-        nameInput.placeholder = 'Name';
-        nameInput.addEventListener('change', async () => {
-          await updateItem(item.id, { name: nameInput.value.trim() });
-        });
-        nameCell.appendChild(nameInput);
-
-        const descCell = document.createElement('td');
-        const descInput = document.createElement('input');
-        descInput.type = 'text';
-        descInput.value = item.desc || '';
-        descInput.placeholder = 'Description';
-        descInput.addEventListener('change', async () => {
-          await updateItem(item.id, { desc: descInput.value.trim() });
-        });
-        descCell.appendChild(descInput);
-
-        const imageFileCell = document.createElement('td');
-        imageFileCell.textContent = item.imageName || `item_${i + 1}.jpg`;
-
-        const actionCell = document.createElement('td');
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'danger';
-        deleteBtn.textContent = 'Delete';
-        deleteBtn.addEventListener('click', async () => {
-          const confirmed = confirm('Delete this item?');
-          if (!confirmed) return;
-          URL.revokeObjectURL(img.src);
-          await deleteItem(item.id);
-          await renderItems();
-        });
-        actionCell.appendChild(deleteBtn);
-
-        row.appendChild(numberCell);
-        row.appendChild(imageCell);
-        row.appendChild(nameCell);
-        row.appendChild(descCell);
-        row.appendChild(imageFileCell);
-        row.appendChild(actionCell);
-
-        tableBody.appendChild(row);
-      }
-
-      itemCounter.textContent = `Item Count: ${items.length}`;
-    }
-
-    function processImage(file, maxWidth = 1400, quality = 0.8) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-
-        reader.onload = () => {
-          const img = new Image();
-
-          img.onload = () => {
-            const scale = Math.min(1, maxWidth / img.width);
-            const canvas = document.createElement('canvas');
-            canvas.width = Math.round(img.width * scale);
-            canvas.height = Math.round(img.height * scale);
-
-            const ctx = canvas.getContext('2d');
-            if (!ctx) {
-              reject(new Error('Canvas unavailable'));
-              return;
-            }
-
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-            canvas.toBlob((blob) => {
-              if (!blob) {
-                reject(new Error('Blob conversion failed'));
-                return;
-              }
-              resolve({ blob });
-            }, 'image/jpeg', quality);
-          };
-
-          img.onerror = () => reject(new Error('Invalid image'));
-          img.src = reader.result;
-        };
-
-        reader.onerror = () => reject(new Error('File reading failed'));
-        reader.readAsDataURL(file);
-      });
-    }
-
-    function escapeCSV(value) {
-      return String(value).replace(/"/g, '""');
-    }
-
-    function getImageExtension(fileName, mimeType) {
-      if (fileName && fileName.includes('.')) {
-        return fileName.split('.').pop().toLowerCase();
-      }
-      if (mimeType === 'image/png') return 'png';
-      if (mimeType === 'image/webp') return 'webp';
-      return 'jpg';
-    }
-
-    function makeSafeFilename(name) {
-      return name
-        .replace(/[^\w.\-]+/g, '_')
-        .replace(/^_+|_+$/g, '')
-        || `file_${Date.now()}.jpg`;
-    }
-
-    function getProjectSlug() {
-      const raw = projectNameInput.value.trim() || 'inventory_project';
-      return raw.replace(/[^\w\-]+/g, '_').replace(/^_+|_+$/g, '');
-    }
-
-    function downloadText(content, filename, mimeType) {
-      const blob = new Blob([content], { type: mimeType });
-      downloadBlob(blob, filename);
-    }
-
-    function downloadBlob(blob, filename) {
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      setTimeout(() => URL.revokeObjectURL(link.href), 1000);
-    }
-
-    function blobToBase64(blob) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result || '');
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      });
-    }
-
-    function delay(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-  </script>
-</body>
-</html>
+  alert("Saved");
+}

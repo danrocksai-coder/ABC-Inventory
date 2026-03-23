@@ -827,24 +827,25 @@
   }
 
   function exportCSV() {
-    if (!imageData.length) {
-      alert('No data');
-      return;
-    }
-
-    const name = projectNameEl.value.trim() || 'project';
-    let csv = 'Row,Original Name,New Name,Title,Category,Condition,Quantity,Est. Price,Description,Notes\n';
-
-    imageData.forEach((item, i) => {
-      csv += `${i + 1},"${csvSafe(item.originalName)}","${csvSafe(item.newName)}","${csvSafe(item.title)}","${csvSafe(item.category)}","${csvSafe(item.condition)}","${csvSafe(item.quantity)}","${csvSafe(item.estimatedPrice)}","${csvSafe((item.description || '').replace(/\n/g,' '))}","${csvSafe((item.notes || '').replace(/\n/g,' '))}"\n`;
-    });
-
-    const link = document.createElement('a');
-    link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-    link.download = `${name.replace(/[^a-z0-9]/gi,'_')}_manifest.csv`;
-    link.click();
-    setStatus('CSV exported');
+  if (!imageData.length) {
+    alert('No data');
+    return;
   }
+
+  const name = projectNameEl.value.trim() || 'project';
+  let csv = 'Row,Original Name,New Name,Title,Category,Condition,Quantity,Est. Price,Description,Notes\n';
+
+  imageData.forEach((item, i) => {
+    csv += `${i + 1},"${csvSafe(item.originalName)}","${csvSafe(item.newName)}","${csvSafe(item.title)}","${csvSafe(item.category)}","${csvSafe(item.condition)}","${csvSafe(item.quantity)}","${csvSafe(item.estimatedPrice)}","${csvSafe((item.description || '').replace(/\n/g,' '))}","${csvSafe((item.notes || '').replace(/\n/g,' '))}"\n`;
+  });
+
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+
+  window.open(url);
+
+  setStatus('Choose where to save CSV');
+}
 
   function importCSV(e) {
     alert("CSV import loads metadata only.\n\nYou must re-upload the actual images for previews to appear.");

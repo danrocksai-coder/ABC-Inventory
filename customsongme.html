@@ -1,0 +1,347 @@
+Create a folder named:
+
+case-studies
+
+Inside that folder, create this file:
+
+customsongme.html
+
+Paste this full code into it:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CustomSongMe.com Case Study | Dan Rock & Co.</title>
+  <meta name="description" content="A case study on CustomSongMe.com, a mobile-first custom song service platform built with SEO structure, order flow, and conversion-focused page architecture.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.danrockandco.com/case-studies/customsongme.html">
+  <meta property="og:title" content="CustomSongMe.com Case Study | Dan Rock & Co.">
+  <meta property="og:description" content="A mobile-first service platform built around personalized songs, clear ordering, SEO structure, and practical customer flow.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.danrockandco.com/case-studies/customsongme.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --charcoal: #0E0E0E;
+      --charcoal-mid: #1a1a1a;
+      --charcoal-border: #2e2e2e;
+      --white: #F5F2EC;
+      --white-dim: #a0998a;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: var(--charcoal);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      padding: 40px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--charcoal-border);
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+    }
+    .brand span {
+      color: var(--gold);
+    }
+    nav {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: var(--white-dim);
+      text-decoration: none;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: color 0.2s ease;
+    }
+    nav a:hover {
+      color: var(--gold);
+    }
+    section {
+      padding: 70px 0;
+      border-bottom: 1px solid var(--charcoal-border);
+    }
+    h1,
+    h2 {
+      font-family: 'Playfair Display', serif;
+    }
+    h1 {
+      font-size: 3.2rem;
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+    h1 span,
+    h2 span {
+      color: var(--gold);
+    }
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 28px;
+    }
+    .eyebrow {
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+    .hero p,
+    .section-copy {
+      color: var(--white-dim);
+      font-size: 1.05rem;
+      max-width: 680px;
+    }
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 22px;
+      margin-top: 32px;
+    }
+    .overview-item {
+      background: var(--charcoal-mid);
+      border: 1px solid var(--charcoal-border);
+      padding: 24px;
+    }
+    .overview-item strong {
+      display: block;
+      color: var(--gold);
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .overview-item p {
+      color: var(--white-dim);
+      font-size: 0.92rem;
+    }
+    .content-card {
+      background: var(--charcoal-mid);
+      border: 1px solid var(--charcoal-border);
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+    .content-card h3 {
+      color: var(--gold);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.9rem;
+    }
+    .content-card p {
+      color: var(--white-dim);
+      margin-bottom: 16px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+      color: var(--white);
+    }
+    .tag-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+    .tag {
+      border: 1px solid var(--charcoal-border);
+      color: var(--white-dim);
+      padding: 8px 12px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .truth-box {
+      background: var(--charcoal-mid);
+      border: 1px solid var(--charcoal-border);
+      border-left: 3px solid var(--gold);
+      padding: 30px;
+    }
+    .truth-box p {
+      color: var(--white-dim);
+      margin-bottom: 16px;
+    }
+    .btn-main {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--charcoal);
+      padding: 18px 32px;
+      text-decoration: none;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: opacity 0.2s ease;
+    }
+    .btn-main:hover {
+      opacity: 0.9;
+    }
+    footer {
+      padding: 60px 0;
+      text-align: center;
+      color: var(--white-dim);
+      font-size: 0.8rem;
+    }
+    @media (max-width: 700px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      section {
+        padding: 55px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="brand">
+      Dan Rock <span>&amp;</span> Co.
+    </div>
+    <nav>
+      <a href="/index.html">Home</a>
+      <a href="/services.html">Services</a>
+      <a href="/case-studies.html">Work</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </header>
+  <section class="hero">
+    <div class="eyebrow">Case Study • Service Platform</div>
+    <h1>
+      CustomSongMe.com<span>.</span>
+    </h1>
+    <p>
+      A mobile-first custom song service platform built around clear messaging, simple ordering, SEO structure, and a customer journey that helps people turn personal stories into custom songs.
+    </p>
+    <div class="overview-grid">
+      <div class="overview-item">
+        <strong>Project Type</strong>
+        <p>Personalized music service website</p>
+      </div>
+      <div class="overview-item">
+        <strong>Focus</strong>
+        <p>Clarity, ordering flow, SEO structure, and conversion</p>
+      </div>
+      <div class="overview-item">
+        <strong>Tools</strong>
+        <p>HTML, CSS, Netlify, Formspree, Google Search Console, Google Analytics</p>
+      </div>
+      <div class="overview-item">
+        <strong>Status</strong>
+        <p>Live and actively improving</p>
+      </div>
+    </div>
+  </section>
+  <section>
+    <h2>The <span>Challenge</span></h2>
+    <p class="section-copy">
+      CustomSongMe.com needed to explain a creative service in a simple way. The offer had to feel personal, trustworthy, and easy to understand while still supporting multiple song categories, payment options, and customer intake needs.
+    </p>
+  </section>
+  <section>
+    <h2>What Was <span>Built</span></h2>
+    <div class="content-card">
+      <h3>Website Structure</h3>
+      <p>
+        The site was organized around a clear homepage, specific song category pages, and a customer request flow designed to reduce confusion.
+      </p>
+      <ul>
+        <li>Homepage structure for the main custom song offer</li>
+        <li>Dedicated landing pages for song categories</li>
+        <li>Navigation designed around common customer needs</li>
+        <li>Clearer calls-to-action throughout the site</li>
+      </ul>
+    </div>
+    <div class="content-card">
+      <h3>Customer Intake Flow</h3>
+      <p>
+        The order flow was built to collect the details needed to create a personalized song without making the process feel overwhelming.
+      </p>
+      <ul>
+        <li>Formspree-powered request form</li>
+        <li>Customer details and song story collection</li>
+        <li>Order ID structure for tracking requests</li>
+        <li>Thank-you page and customer direction after submission</li>
+      </ul>
+    </div>
+    <div class="content-card">
+      <h3>SEO and Technical Foundation</h3>
+      <p>
+        The project included practical search and indexing improvements to help the site become easier for search engines and users to understand.
+      </p>
+      <ul>
+        <li>Meta titles and descriptions</li>
+        <li>Canonical URL structure</li>
+        <li>Google Search Console verification</li>
+        <li>Google Analytics integration</li>
+        <li>Internal page structure for multiple service categories</li>
+      </ul>
+    </div>
+  </section>
+  <section>
+    <h2>Skills <span>Demonstrated</span></h2>
+    <div class="tag-row">
+      <div class="tag">Mobile-First Layout</div>
+      <div class="tag">Landing Page Strategy</div>
+      <div class="tag">Form Integration</div>
+      <div class="tag">Technical SEO Basics</div>
+      <div class="tag">Customer Flow</div>
+      <div class="tag">Brand Messaging</div>
+      <div class="tag">Content Structure</div>
+      <div class="tag">Iteration</div>
+    </div>
+  </section>
+  <section>
+    <h2>Honest <span>Notes</span></h2>
+    <div class="truth-box">
+      <p>
+        This project is not presented as a finished enterprise-level build. It is a real, active service platform that has been shaped through practical testing, troubleshooting, customer feedback, and continuous improvement.
+      </p>
+      <p>
+        The value of the project is in the execution: turning a creative service into a structured online system with pages, forms, messaging, tracking, and a clearer path for customers to take action.
+      </p>
+    </div>
+  </section>
+  <section>
+    <h2>What This Shows</h2>
+    <p class="section-copy">
+      CustomSongMe.com demonstrates the ability to take an idea, structure the offer, build a working web presence, connect customer intake, improve page clarity, and continue refining the system over time.
+    </p>
+    <br>
+    <a href="/contact.html" class="btn-main">
+      Discuss a Project
+    </a>
+  </section>
+  <footer>
+    &copy; 2026 Dan Rock &amp; Co. • Oxnard, California
+  </footer>
+</div>
+</body>
+</html>

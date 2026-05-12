@@ -3,90 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>661 Project Match | Fast Local Contractor Pricing</title>
-
-  <meta name="description" content="Upload photos of your home project and get connected with independent local contractors across Santa Clarita, Valencia, Canyon Country, Newhall, Lancaster, Palmdale, and the 661 area." />
-
+  <title>661 Project Match | Home Project Intake & Local Pro Connection</title>
+  <meta name="description" content="Upload photos of your home project and connect with vetted independent local pros across Santa Clarita, Valencia, Lancaster, Palmdale, and the 661 area." />
   <meta name="robots" content="index, follow" />
-
   <link rel="canonical" href="https://www.danrockandco.com/661-project-match" />
-
-  <meta property="og:title" content="661 Project Match | Fast Local Contractor Pricing" />
-  <meta property="og:description" content="Upload photos, describe your project, and get connected with independent local contractors in the 661 area." />
+  <meta property="og:title" content="661 Project Match | Home Project Intake & Local Pro Connection" />
+  <meta property="og:description" content="Photo-based homeowner intake and local pro connection system powered by Dan Rock & Co." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.danrockandco.com/661-project-match" />
-
   <meta name="theme-color" content="#0E0E0E" />
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": "661 Project Match",
-    "url": "https://www.danrockandco.com/661-project-match",
-    "description": "Photo-based homeowner intake and local contractor connection platform serving the 661 area.",
-    "areaServed": [
-      "Santa Clarita",
-      "Valencia",
-      "Newhall",
-      "Canyon Country",
-      "Saugus",
-      "Castaic",
-      "Lancaster",
-      "Palmdale",
-      "661 Area"
-    ],
-    "provider": {
-      "@type": "ProfessionalService",
-      "name": "Dan Rock & Co."
-    }
-  }
-  </script>
-
   <style>
-
     :root {
       --gold: #C9A84C;
       --charcoal: #0E0E0E;
-      --charcoal-mid: #1a1a1a;
-      --charcoal-soft: #222;
+      --mid: #1a1a1a;
       --border: #333;
       --white: #F5F2EC;
       --dim: #aaa397;
+      --cream: #fff7df;
     }
-
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
     body {
       background: var(--charcoal);
       color: var(--white);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       line-height: 1.6;
     }
-
     a {
       color: inherit;
     }
-
     .container {
-      width: min(1100px, 92%);
+      width: min(1120px, 92%);
       margin: 0 auto;
     }
-
-    header {
-      padding: 28px 0;
+    header, section, footer {
       border-bottom: 1px solid var(--border);
     }
-
+    header {
+      padding: 28px 0;
+    }
     .nav {
       display: flex;
       justify-content: space-between;
@@ -94,78 +53,65 @@
       gap: 20px;
       flex-wrap: wrap;
     }
-
     .brand {
-      font-size: 1.5rem;
+      font-size: 1.55rem;
       font-weight: 900;
-      letter-spacing: -0.02em;
+      letter-spacing: -.02em;
     }
-
     .brand span {
       color: var(--gold);
     }
-
     nav {
       display: flex;
       gap: 18px;
       flex-wrap: wrap;
     }
-
     nav a {
       color: var(--dim);
       text-decoration: none;
-      font-size: 0.82rem;
+      font-size: .78rem;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 700;
+      letter-spacing: .12em;
+      font-weight: 800;
     }
-
     nav a:hover {
       color: var(--gold);
     }
-
     .hero {
-      padding: 86px 0 74px;
+      padding: 92px 0 78px;
       background:
-        radial-gradient(circle at top right, rgba(201,168,76,0.18), transparent 34%),
-        linear-gradient(135deg, #0E0E0E 0%, #171717 100%);
-      border-bottom: 1px solid var(--border);
+        radial-gradient(circle at top right, rgba(201,168,76,.18), transparent 34%),
+        linear-gradient(135deg, #0E0E0E, #171717);
     }
-
     .eyebrow {
       color: var(--gold);
       text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-size: 0.78rem;
+      letter-spacing: .18em;
+      font-size: .78rem;
       font-weight: 900;
       margin-bottom: 18px;
     }
-
     h1 {
-      font-size: clamp(2.4rem, 7vw, 5.2rem);
-      line-height: 0.95;
-      letter-spacing: -0.06em;
-      max-width: 900px;
+      font-size: clamp(2.5rem, 7vw, 5.2rem);
+      line-height: .95;
+      letter-spacing: -.06em;
+      max-width: 940px;
       margin-bottom: 24px;
     }
-
     h1 span {
       color: var(--gold);
     }
-
     .hero p {
       color: var(--dim);
-      font-size: 1.18rem;
-      max-width: 760px;
-      margin-bottom: 32px;
+      font-size: 1.16rem;
+      max-width: 780px;
+      margin-bottom: 34px;
     }
-
     .btn-row {
       display: flex;
       gap: 14px;
       flex-wrap: wrap;
     }
-
     .btn {
       display: inline-block;
       background: var(--gold);
@@ -174,146 +120,140 @@
       text-decoration: none;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      border-radius: 2px;
+      letter-spacing: .08em;
       border: 1px solid var(--gold);
     }
-
     .btn.secondary {
       background: transparent;
       color: var(--white);
       border-color: var(--border);
     }
-
     .trust-strip {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1px;
       background: var(--border);
-      border-bottom: 1px solid var(--border);
     }
-
     .trust-item {
-      background: var(--charcoal-mid);
+      background: var(--mid);
       padding: 22px;
       text-align: center;
       font-weight: 900;
-      color: var(--white);
     }
-
     .trust-item span {
       display: block;
       color: var(--dim);
-      font-size: 0.84rem;
+      font-size: .84rem;
       font-weight: 500;
       margin-top: 4px;
     }
-
     section {
-      padding: 72px 0;
-      border-bottom: 1px solid var(--border);
+      padding: 74px 0;
     }
-
     h2 {
       font-size: clamp(1.9rem, 4vw, 3rem);
       line-height: 1.05;
-      letter-spacing: -0.04em;
+      letter-spacing: -.04em;
       margin-bottom: 16px;
     }
-
     .section-sub {
       color: var(--dim);
-      max-width: 720px;
-      margin-bottom: 40px;
+      max-width: 760px;
+      margin-bottom: 42px;
       font-size: 1.05rem;
     }
-
     .grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 22px;
     }
-
-    .card {
-      background: var(--charcoal-mid);
-      border: 1px solid var(--border);
-      padding: 28px;
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
     }
-
-    .card .num {
+    .card {
+      background: var(--mid);
+      border: 1px solid var(--border);
+      padding: 30px;
+    }
+    .label {
       color: var(--gold);
-      font-size: 0.9rem;
+      font-size: .82rem;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.14em;
+      letter-spacing: .14em;
       margin-bottom: 12px;
     }
-
     .card h3 {
       font-size: 1.25rem;
       margin-bottom: 10px;
     }
-
-    .card p {
+    .card p,
+    .card li {
       color: var(--dim);
-      font-size: 0.97rem;
+      font-size: .96rem;
     }
-
+    ul {
+      margin-left: 20px;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+    .highlight {
+      background: linear-gradient(135deg, rgba(201,168,76,.16), rgba(201,168,76,.04));
+    }
     .project-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 14px;
     }
-
     .project-type {
-      background: var(--charcoal-mid);
+      background: var(--mid);
       border: 1px solid var(--border);
       padding: 18px;
-      font-weight: 800;
-      color: var(--white);
+      font-weight: 900;
     }
-
     .project-type span {
       display: block;
       color: var(--dim);
-      font-size: 0.84rem;
+      font-size: .84rem;
       font-weight: 500;
       margin-top: 4px;
     }
-
-    .highlight {
-      background: linear-gradient(135deg, rgba(201,168,76,0.16), rgba(201,168,76,0.04));
-    }
-
     .split {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 34px;
       align-items: start;
     }
-
+    .notice-dark {
+      background: var(--mid);
+      border: 1px solid var(--border);
+      padding: 24px;
+      color: var(--dim);
+    }
+    .notice-dark strong {
+      color: var(--gold);
+    }
     .form-box {
       background: var(--white);
       color: var(--charcoal);
-      padding: 34px;
-      border-radius: 4px;
+      padding: 36px;
     }
-
     .form-box h2 {
       color: var(--charcoal);
     }
-
     .form-box p {
       color: #4b4b4b;
+      margin-bottom: 18px;
     }
-
     label {
       display: block;
       font-weight: 900;
-      font-size: 0.92rem;
+      font-size: .92rem;
       margin-bottom: 6px;
     }
-
     input,
     select,
     textarea {
@@ -321,30 +261,25 @@
       padding: 14px;
       margin-bottom: 17px;
       border: 1px solid #ccc;
-      border-radius: 2px;
       font: inherit;
       background: #fff;
     }
-
     textarea {
-      min-height: 130px;
+      min-height: 140px;
       resize: vertical;
     }
-
     .checkbox-row {
       display: flex;
       gap: 10px;
       align-items: flex-start;
       margin: 8px 0 20px;
-      font-size: 0.9rem;
+      font-size: .9rem;
       color: #333;
     }
-
     .checkbox-row input {
       width: auto;
       margin-top: 5px;
     }
-
     button {
       width: 100%;
       border: none;
@@ -353,302 +288,250 @@
       padding: 16px;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: .08em;
       cursor: pointer;
     }
-
-    .notice {
-      background: #fff7df;
+    .notice-light {
+      background: var(--cream);
       color: #3d2f00;
       padding: 18px;
       border-left: 4px solid var(--gold);
-      font-size: 0.92rem;
+      font-size: .92rem;
       margin-top: 18px;
     }
-
-    .dark-notice {
-      background: var(--charcoal-mid);
-      border: 1px solid var(--border);
-      padding: 24px;
-      color: var(--dim);
-    }
-
-    .dark-notice strong {
-      color: var(--gold);
-    }
-
     .areas {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin-top: 24px;
     }
-
     .area {
-      background: var(--charcoal-mid);
+      background: var(--mid);
       border: 1px solid var(--border);
       padding: 9px 14px;
-      color: var(--white);
       font-weight: 800;
-      font-size: 0.9rem;
+      font-size: .9rem;
     }
-
-    .partner-box {
-      background: var(--charcoal-mid);
-      border: 1px solid var(--border);
-      padding: 34px;
-    }
-
-    .partner-box ul {
-      color: var(--dim);
-      margin-left: 20px;
-      margin-bottom: 22px;
-    }
-
-    .partner-box li {
-      margin-bottom: 8px;
-    }
-
     footer {
       padding: 44px 0;
       color: var(--dim);
-      font-size: 0.88rem;
+      font-size: .88rem;
       text-align: center;
     }
-
     footer a {
       color: var(--gold);
       text-decoration: none;
       font-weight: 800;
     }
-
     @media (max-width: 820px) {
-
       .trust-strip,
       .grid-3,
+      .grid-2,
       .split {
         grid-template-columns: 1fr;
       }
-
       .hero {
-        padding: 64px 0;
+        padding: 66px 0;
       }
-
       .btn {
         width: 100%;
         text-align: center;
       }
-
     }
-
   </style>
 </head>
-
 <body>
-
 <header>
   <div class="container nav">
-    <div class="brand">Dan Rock <span>&amp;</span> Co.</div>
-
+    <div class="brand">
+      Dan Rock <span>&amp;</span> Co.
+    </div>
     <nav>
       <a href="/services.html">Services</a>
       <a href="/661-project-match">Project Match</a>
       <a href="/case-studies.html">Work</a>
       <a href="/contact.html">Contact</a>
     </nav>
-
   </div>
 </header>
-
 <main>
-
 <section class="hero">
-
   <div class="container">
-
     <div class="eyebrow">
       661 Project Match
     </div>
-
     <h1>
-      Upload your project<span>.</span><br>
-      Get connected fast<span>.</span>
+      Upload your home project<span>.</span><br>
+      Get connected faster<span>.</span>
     </h1>
-
     <p>
-      Take photos of your bathroom, kitchen, flooring, paint, stucco, windows, doors, or repair project. We help organize your request and connect you with independent local contractors across the 661 area.
+      A homeowner-first intake and local pro connection system for the 661 area. Upload photos, explain what you need, and we help organize your request so vetted independent local pros can respond quickly and professionally.
     </p>
-
     <div class="btn-row">
       <a href="#project-form" class="btn">
         Start My Project Request
       </a>
-
       <a href="#contractors" class="btn secondary">
-        Contractor Partners
+        For Contractors
       </a>
     </div>
-
   </div>
-
 </section>
-
 <div class="trust-strip">
-
   <div class="trust-item">
     Photo-Based Intake
-    <span>Show the project clearly</span>
+    <span>Clearer project details</span>
   </div>
-
   <div class="trust-item">
     661 Area Focus
     <span>Santa Clarita to Antelope Valley</span>
   </div>
-
   <div class="trust-item">
-    Fast Routing
-    <span>Initial responses during business hours</span>
+    Preferred Pro Rotation
+    <span>Two preferred pros to start</span>
   </div>
-
   <div class="trust-item">
-    Independent Contractors
-    <span>License details requested</span>
+    Fast Follow-Up
+    <span>Built around responsiveness</span>
   </div>
-
 </div>
-
 <section>
-
   <div class="container">
-
     <h2>How it works</h2>
-
     <p class="section-sub">
-      The goal is simple: save homeowners time and help contractors receive cleaner, more organized project requests.
+      The goal is simple: help homeowners avoid chasing contractors while helping serious local pros receive cleaner project requests.
     </p>
-
     <div class="grid-3">
-
       <div class="card">
-        <div class="num">Step 01</div>
+        <div class="label">Step 01</div>
         <h3>Upload photos</h3>
-        <p>Take photos of the area you want repaired, remodeled, upgraded, or priced.</p>
+        <p>
+          Show the room, repair, exterior area, pool, fence, flooring, landscaping, or project space clearly.
+        </p>
       </div>
-
       <div class="card">
-        <div class="num">Step 02</div>
+        <div class="label">Step 02</div>
         <h3>Describe the goal</h3>
-        <p>Tell us what you want done, your city, timeline, and rough budget range.</p>
+        <p>
+          Tell us what you want fixed, upgraded, repaired, or priced, including your timeline and city.
+        </p>
       </div>
-
       <div class="card">
-        <div class="num">Step 03</div>
+        <div class="label">Step 03</div>
         <h3>Get connected</h3>
-        <p>Your request may be shared with independent local contractors who can respond with availability, pricing, and licensing details.</p>
+        <p>
+          Your project request will be reviewed and routed to a preferred independent local pro based on your project type, service area, and availability. Your first name, phone number, city, photos, and project details will be shared so the pro can contact you directly about your request.
+        </p>
       </div>
-
     </div>
-
   </div>
-
 </section>
-
 <section class="highlight">
-
   <div class="container">
-
-    <h2>Good • Better • Best project ranges</h2>
-
+    <h2>
+      Good • Better • Best project planning
+    </h2>
     <p class="section-sub">
-      When possible, projects can be organized into three simple pricing levels so homeowners understand the difference between basic, balanced, and premium approaches.
+      When possible, projects are organized into simple planning ranges so homeowners can compare practical, balanced, and premium approaches before wasting time on vague calls.
     </p>
-
     <div class="grid-3">
-
       <div class="card">
-        <div class="num">Good</div>
+        <div class="label">Good</div>
         <h3>Budget-conscious</h3>
-        <p>Focused on solving the main issue with a practical lower-cost approach.</p>
+        <p>
+          Focused on solving the core issue with a practical lower-cost approach.
+        </p>
       </div>
-
       <div class="card">
-        <div class="num">Better</div>
+        <div class="label">Better</div>
         <h3>Balanced value</h3>
-        <p>Better materials, cleaner finish work, and more complete scope.</p>
+        <p>
+          Better materials, cleaner finish work, and a more complete scope.
+        </p>
       </div>
-
       <div class="card">
-        <div class="num">Best</div>
+        <div class="label">Best</div>
         <h3>Premium finish</h3>
-        <p>Higher-end materials, larger upgrades, and more complete transformation work.</p>
+        <p>
+          Higher-end materials, larger upgrades, and more complete transformation work.
+        </p>
       </div>
-
     </div>
-
-    <div class="dark-notice" style="margin-top:24px;">
-      <strong>Important:</strong> Any pricing shown before a contractor visit is only a ballpark planning range. Final pricing, permits, contracts, licensing, insurance, and job responsibility are handled directly between the homeowner and the independent contractor.
+    <div class="notice-dark" style="margin-top:24px;">
+      <strong>Important:</strong>
+      Any pricing discussed before a site visit is informational only. Final pricing, contracts, permits, insurance, warranties, licensing, and job responsibility are handled directly between the homeowner and the independent contractor.
     </div>
-
   </div>
-
 </section>
-
 <section>
-
   <div class="container">
-
-    <h2>Project types</h2>
-
+    <h2>
+      Preferred pro standards
+    </h2>
     <p class="section-sub">
-      The clearer the request, the easier it is for a contractor to respond quickly.
+      661 Project Match is designed around responsiveness, professionalism, and homeowner experience.
     </p>
-
-    <div class="project-grid">
-
-      <div class="project-type">Bathrooms<span>showers, tile, vanities, repairs</span></div>
-
-      <div class="project-type">Kitchens<span>cabinets, counters, flooring, layout</span></div>
-
-      <div class="project-type">Flooring<span>replacement and upgrades</span></div>
-
-      <div class="project-type">Painting<span>interior and exterior</span></div>
-
-      <div class="project-type">Stucco<span>patching and repair</span></div>
-
-      <div class="project-type">Windows & Doors<span>replacement and trim work</span></div>
-
-      <div class="project-type">Outdoor Spaces<span>patios and exterior improvements</span></div>
-
-      <div class="project-type">General Repairs<span>smaller handyman-style projects</span></div>
-
+    <div class="grid-2">
+      <div class="card">
+        <div class="label">Minimum Standards</div>
+        <ul>
+          <li>Active license where required</li>
+          <li>Google Business Profile</li>
+          <li>Strong review history</li>
+          <li>Proof of insurance when applicable</li>
+          <li>Professional communication</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="label">Response Expectations</div>
+        <ul>
+          <li>Fast homeowner acknowledgment during business hours</li>
+          <li>Goal of contractor contact within 30–60 minutes whenever possible</li>
+          <li>Repeated missed follow-ups may affect preferred status</li>
+          <li>Homeowner experience matters more than lowest pricing</li>
+        </ul>
+      </div>
     </div>
-
   </div>
-
 </section>
-
+<section>
+  <div class="container">
+    <h2>
+      Project categories
+    </h2>
+    <p class="section-sub">
+      The clearer the request, the easier it is for the right local pro to respond intelligently.
+    </p>
+    <div class="project-grid">
+      <div class="project-type">Bathrooms<span>showers, tile, vanities, repairs</span></div>
+      <div class="project-type">Kitchens<span>cabinets, counters, flooring, layout</span></div>
+      <div class="project-type">Flooring<span>replacement and upgrades</span></div>
+      <div class="project-type">Painting<span>interior and exterior</span></div>
+      <div class="project-type">Pools & Spas<span>repairs, resurfacing, installs</span></div>
+      <div class="project-type">Landscaping<span>yards, drainage, hardscape</span></div>
+      <div class="project-type">Fences & Gates<span>wood, vinyl, iron, repairs</span></div>
+      <div class="project-type">Concrete & Masonry<span>driveways, patios, block walls</span></div>
+      <div class="project-type">Stucco<span>patching and exterior finish</span></div>
+      <div class="project-type">Windows & Doors<span>replacement and trim work</span></div>
+      <div class="project-type">Roofing<span>repair and replacement</span></div>
+      <div class="project-type">General Repairs<span>smaller handyman-style projects</span></div>
+    </div>
+  </div>
+</section>
 <section id="project-form">
-
   <div class="container split">
-
     <div>
-
-      <h2>Start your 661 project request</h2>
-
+      <h2>
+        Start your 661 project request
+      </h2>
       <p class="section-sub">
         Upload photos, explain what you want done, and include your city or ZIP code.
       </p>
-
-      <div class="dark-notice">
-
+      <div class="notice-dark">
         <strong>Coverage area:</strong>
-
-        Santa Clarita, Valencia, Newhall, Canyon Country, Saugus, Stevenson Ranch, Castaic, Acton, Agua Dulce, Lancaster, Palmdale, Quartz Hill, Rosamond, and surrounding 661-area communities.
-
+        Santa Clarita, Valencia, Newhall, Canyon Country, Saugus, Stevenson Ranch, Castaic, Acton, Agua Dulce, Lancaster, Palmdale, Quartz Hill, Rosamond, and nearby 661-area communities.
       </div>
-
       <div class="areas">
-
         <span class="area">Santa Clarita</span>
         <span class="area">Valencia</span>
         <span class="area">Newhall</span>
@@ -658,50 +541,54 @@
         <span class="area">Lancaster</span>
         <span class="area">Palmdale</span>
         <span class="area">661 Area</span>
-
       </div>
-
     </div>
-
     <div class="form-box">
-
-      <h2>Project Intake Form</h2>
-
+      <h2>
+        Project Intake Form
+      </h2>
       <p>
-        Send your project details below. Photos help local contractors understand the job faster.
+        Photos help local pros understand the job faster and reduce wasted back-and-forth.
       </p>
-
       <form action="https://formspree.io/f/YOUR_FORM_CODE_HERE" method="POST" enctype="multipart/form-data">
-
-        <label for="name">Full Name *</label>
+        <label for="name">
+          First Name *
+        </label>
         <input type="text" id="name" name="name" required>
-
-        <label for="phone">Phone Number *</label>
+        <label for="phone">
+          Phone Number *
+        </label>
         <input type="tel" id="phone" name="phone" required>
-
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email">
-
-        <label for="city">City / ZIP Code *</label>
+        <label for="email">
+          Email Address *
+        </label>
+        <input type="email" id="email" name="email" required>
+        <label for="city">
+          City / ZIP Code *
+        </label>
         <input type="text" id="city" name="city_zip" placeholder="Example: Santa Clarita 91350" required>
-
-        <label for="project-type">Project Type *</label>
-
+        <label for="project-type">
+          Project Type *
+        </label>
         <select id="project-type" name="project_type" required>
           <option value="">Select one...</option>
           <option>Bathroom</option>
           <option>Kitchen</option>
           <option>Flooring</option>
           <option>Painting</option>
+          <option>Pools & Spas</option>
+          <option>Landscaping</option>
+          <option>Fences & Gates</option>
+          <option>Concrete & Masonry</option>
           <option>Stucco</option>
-          <option>Windows / Doors</option>
-          <option>Outdoor Space</option>
-          <option>General Repair</option>
+          <option>Windows & Doors</option>
+          <option>Roofing</option>
+          <option>General Repairs</option>
           <option>Other</option>
         </select>
-
-        <label for="timeline">Timeline</label>
-
+        <label for="timeline">
+          Timeline
+        </label>
         <select id="timeline" name="timeline">
           <option value="">Select one...</option>
           <option>As soon as possible</option>
@@ -710,9 +597,9 @@
           <option>1–3 months</option>
           <option>Just planning</option>
         </select>
-
-        <label for="budget">Budget Range</label>
-
+        <label for="budget">
+          Budget Range
+        </label>
         <select id="budget" name="budget_range">
           <option value="">Select one...</option>
           <option>Under $2,500</option>
@@ -722,106 +609,80 @@
           <option>$25,000+</option>
           <option>Not sure yet</option>
         </select>
-
-        <label for="details">Describe What You Want Done *</label>
-
-        <textarea id="details" name="project_details" required></textarea>
-
-        <label for="photos">Upload Photos</label>
-
+        <label for="details">
+          Describe What You Want Done *
+        </label>
+        <textarea id="details" name="project_details" placeholder="Describe the current issue, what you want changed, preferred materials or style, and anything important about the project." required></textarea>
+        <label for="photos">
+          Upload Photos
+        </label>
         <input type="file" id="photos" name="photos" multiple accept="image/*">
-
         <div class="checkbox-row">
-
-          <input type="checkbox" id="permission" required>
-
+          <input type="checkbox" id="permission" name="contact_permission" required>
           <label for="permission">
-            I agree to be contacted about this request and understand that my project details may be shared with independent local contractors for pricing and availability.
+            I agree to be contacted about this request and understand that my first name, phone number, city, photos, and project details will be shared with a preferred independent local pro so they can contact me directly about my project.
           </label>
-
         </div>
-
         <button type="submit">
           Send My Project Request
         </button>
-
       </form>
-
-      <div class="notice">
-
-        661 Project Match is not a contractor and does not perform construction work. Contractors are independent businesses. Homeowners should verify licensing, insurance, pricing, reviews, and contract terms before hiring.
-
+      <div class="notice-light">
+        Your email address is kept private and used primarily for communication and follow-up from Dan Rock &amp; Co.
       </div>
-
     </div>
-
   </div>
-
 </section>
-
 <section id="contractors">
-
   <div class="container split">
-
     <div>
-
-      <h2>Contractor partner opportunity</h2>
-
+      <h2>
+        For contractor partners
+      </h2>
       <p class="section-sub">
-        This system is designed to send cleaner homeowner project requests with photos, location, budget range, and timeline already included.
+        661 Project Match is designed to help serious local pros receive cleaner homeowner requests with photos, location, project type, budget range, and timeline already included.
       </p>
-
     </div>
-
-    <div class="partner-box">
-
-      <h3>What contractor partners may receive</h3>
-
-      <ul>
-        <li>Organized homeowner project requests</li>
-        <li>Photos before the first call</li>
-        <li>City, timeline, and budget range</li>
-        <li>Good / Better / Best project context</li>
-        <li>Fast response opportunities for local leads</li>
-      </ul>
-
+    <div class="card">
+      <div class="label">
+        Preferred Pro Rotation
+      </div>
+      <h3>
+        Two preferred pros per category to start.
+      </h3>
+      <p>
+        The goal is not to flood dozens of contractors with the same lead. Most categories start with two preferred pros per service area. A third backup pro may be added when demand is high or when extra coverage is needed.
+      </p>
+      <br>
+      <p>
+        Applying means your business can be reviewed for preferred placement based on license status, reviews, service area, communication, and response speed. Early approved pros may be invited to test the system before paid lead or subscription options are introduced.
+      </p>
+      <br>
       <a href="/contact.html" class="btn">
-        Become a Partner
+        Apply to Become a Preferred Pro
       </a>
-
     </div>
-
   </div>
-
 </section>
-
 </main>
-
 <footer>
-
   <div class="container">
-
     <p>
       661 Project Match is powered by
       <a href="/">
         Dan Rock &amp; Co.
       </a>
     </p>
-
     <p>
       Call or text:
       <a href="tel:+16617140903">
         (661) 714-0903
       </a>
     </p>
-
     <p>
       © 2026 Dan Rock &amp; Co. All rights reserved.
     </p>
-
   </div>
-
 </footer>
-
 </body>
 </html>
